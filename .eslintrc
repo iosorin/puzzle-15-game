@@ -1,0 +1,36 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "ecmaVersion": 2019,
+        "sourceType": "module"
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules": {
+        "semi": [2, "always"],
+        "no-console": 1,
+        "quote-props": [0, "as-needed"],
+        "no-unused-expressions": 2,
+        "no-unused-vars": 1,
+        "no-trailing-spaces": 1,
+        "indent": [
+            1,
+            4,
+            {
+                "ignoredNodes": [
+                    "TemplateLiteral"
+                ],
+                "SwitchCase": 1
+            }
+        ],
+        "brace-style": [1, "stroustrup"],
+        "space-before-function-paren": ["error", "never"]
+    }
+}

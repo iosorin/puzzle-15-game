@@ -1,0 +1,68 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
+
+// universal
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    font-size: 100%;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    &.centered {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+.button,
+.icon-button {
+    &.bordered {
+        outline: -webkit-focus-ring-color auto 1px;
+    }
+
+    &.dark {
+        background: #151515 !important;
+        color: #fff !important;
+    }
+
+    &.inline {
+        display: inline-block !important;
+        padding: 0 1rem;
+    }
+}
+
+.link {
+    color: #fff;
+    border-bottom: 1px solid transparent;
+    transition: border .27s ease;
+
+    &:hover {
+        border-color: #fff;
+    }
+
+    &.dark {
+        color: #000;
+
+        &:hover {
+            border-color: #000;
+        }
+    }
+}
+
+.button {
+    @include button();
+}
+
+.icon-button {
+    @include button-icon();
+}

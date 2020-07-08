@@ -1,0 +1,85 @@
+@import 'reset';
+@import '@puzzle/css';
+
+:root {
+    --grey: #D0D0D0;
+    --green-light: #D8FFBC;
+    --green-middle: #8AC858;
+    --green-dark: #83BE54;
+    --app-background: #F9F9FB;
+    --app-padding: 0 10px;
+    --puzzle-width: 400px;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--app-background);
+    padding: var(--app-padding);
+}
+
+.input-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 9px;
+    border-radius: 5px;
+    background: var(--grey);
+    outline: none;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--green-dark);
+        cursor: pointer;
+    }
+}
+
+.puzzle {
+    &__slider {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    &__container {
+        max-width: var(--puzzle-width);
+    }
+
+    &__buttons {
+        display: flex;
+        margin-top: 15px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+
+        button {
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-left: 10px;
+            opacity: 0.8;
+            transition: opacity .2s ease-out;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}

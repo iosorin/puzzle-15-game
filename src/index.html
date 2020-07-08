@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <title>Pukabu Test</title>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="puzzle">
+            <div class="puzzle__slider">
+                <input type="range" class="input-slider js-puzzle-slider" min="5" max="10" value="5" step="1">
+            </div>
+            <div class="puzzle__container js-puzzle-container"></div>
+            <div class="puzzle__buttons">
+                <button class="js-puzzle-button" data-action="undo">undo</button>
+                <button class="js-puzzle-button" data-action="redo">redo</button>
+                <button class="js-puzzle-button" data-action="shuffle" data-param="0">shuffle</button>
+                <button class="js-puzzle-button" data-action="resolve">resolve</button>
+                <button class="js-puzzle-button" data-action="destroy" disabled>destroy</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

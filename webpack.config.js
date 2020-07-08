@@ -5,29 +5,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtactPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 /* --------------------------- TOP-LEVEL VARIABLES -------------------------- */
-const src = () => path.resolve(__dirname, 'src');
-const dist = () => path.resolve(__dirname, 'dist');
-
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
 /* --------------------------------- CONGIF --------------------------------- */
 module.exports = {
     mode: process.env.NODE_ENV,
-    context: src(),
+    context: path.resolve(__dirname, 'src'),
     entry: {
-        app: ['@babel/polyfill', './app.js']
+        app: ['@babel/polyfill', './js/app.js']
     },
     output: {
-        path: dist(),
+        path: path.resolve(__dirname, 'dist'),
         filename: filename('js')
     },
     devServer: {
         port: 9000,
-        contentBase: dist()
+        contentBase: path.resolve(__dirname, 'dist')
     },
     devtool: isDev ? 'source-map' : '',
     optimization: optimization(),
@@ -39,13 +37,22 @@ module.exports = {
             }
         }),
         new CleanWebpackPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/assets'),
+                    to: path.resolve(__dirname, 'dist/assets')
+                }
+            ]
+        }),
         new MiniCssExtactPlugin({
             filename: filename('css')
         })
     ],
     resolve: {
         alias: {
-            '@': src()
+            '@': path.resolve(__dirname, 'src'),
+            '@puzzle': path.resolve(__dirname, 'src/js/puzzle')
         },
         extensions: ['.js', '.css', '.scss', '.sass']
     },
@@ -54,10 +61,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: [
-                    jsLoader(),
-                    'eslint-loader'
-                ]
+                use: jsLoaders()
             },
             {
                 test: /\.css$/,
@@ -115,22 +119,12 @@ function cssLoaders(additional) {
     return loaders;
 }
 
-function jsLoader(preset) {
-    const loader = {
-        loader: 'babel-loader',
-        options: {
-            presets: [
-                '@babel/preset-env'
-            ],
-            plugins: [
-                '@babel/plugin-proposal-class-properties'
-            ]
-        }
-    };
+function jsLoaders() {
+    const loaders = ['babel-loader'];
 
-    if (preset) {
-        loader.options.presets.push(preset);
+    if (isDev) {
+        loaders.push('eslint-loader');
     }
 
-    return loader;
+    return loaders;
 }

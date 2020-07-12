@@ -1,6 +1,6 @@
 import { $ } from './core/dom';
 import { components } from './components';
-import { merge, keymapEvent } from './core/utils';
+import { keymapEvent } from './core/utils';
 import { options as initialOptions, keymap } from './core/defaults';
 import { Emitter } from './core/Emitter';
 import { BaseComponent } from './core/BaseComponent';
@@ -33,8 +33,9 @@ export class PuzzleGame extends BaseComponent {
 
             if (component.toHTML().length) {
                 $componentRoot.html(component.toHTML());
-                $gameRoot.append($componentRoot);
             }
+
+            $gameRoot.append($componentRoot);
 
             return component;
         });
@@ -46,7 +47,7 @@ export class PuzzleGame extends BaseComponent {
         const event = keymapEvent(keymap, e);
 
         if (event) {
-            this.$emit('puzzle:keydown', event);
+            this.$emit('puzzle:move', event);
         }
     }
 

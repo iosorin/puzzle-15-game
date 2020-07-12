@@ -24,14 +24,14 @@ class PuzzleSlider extends BaseComponent {
         this.updateSize();
     }
 
-    onChange(e) {
-        this.updateSize(e.target.value);
-    }
-
     updateSize(size = this.size) {
         this.size = inInterval(size, this.min, this.max);
 
-        this.$emit('slider:change', this.size);
+        this.$emit('size:change', this.size);
+    }
+
+    onChange(e) {
+        this.updateSize(e.target.value);
     }
 
     toHTML() {

@@ -1,4 +1,3 @@
-// Pure functions - не взаимодействуют с глобальном скопом, реагируют только на входящие параметры
 const capitalize = (str) => {
     if (typeof str !== 'string' || !str.split().length) {
         return '';
@@ -31,10 +30,10 @@ function camelToDashCase(str) {
     return str.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
 }
 
-function toInlineStyles(styles = {}, prefixToAll = '') {
+function toInlineStyles(styles = {}) {
     if (styles) {
         return Object.keys(styles)
-            .map(key => `${ camelToDashCase(key) }: ${ styles[key] + prefixToAll}`)
+            .map(key => `${ camelToDashCase(key) }: ${ styles[key] }`)
             .join(';');
     }
 
@@ -61,33 +60,6 @@ function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-function merge(target, ...sources) {
-    if (!sources.length) {
-        return target;
-    }
-
-    const isObject = item => (item && typeof item === 'object' && !Array.isArray(item));
-
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) {
-                    Object.assign(target, { [key]: {} });
-                }
-
-                merge(target[key], source[key]);
-            }
-            else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-
-    return merge(target, ...sources);
-}
-
 function keymapEvent(keymap, e) {
     const altKey = e.altKey;
     const cmdKey = e.ctrlKey || e.metaKey;
@@ -105,6 +77,5 @@ export {
     isEqual,
     toInlineStyles,
     clone,
-    merge,
     keymapEvent
 };

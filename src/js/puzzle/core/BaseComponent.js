@@ -7,25 +7,9 @@ export class BaseComponent extends DomListener {
         this.name = componentOptions.name || '';
         this.emitter = componentOptions.emitter;
 
-        this.state = {};
         this.unsubscribers = [];
 
         this.onBeforeInit();
-    }
-
-    // STATE ========================================
-    get template() {
-        return JSON.stringify(this.state, null, 2);
-    }
-
-    initState(initialState = {}) {
-        this.state = { ...initialState };
-    }
-
-    setState(newState) {
-        this.state = { ...this.state, ...newState };
-
-        this.$root.html(this.template);
     }
 
     // EMITTER ========================================

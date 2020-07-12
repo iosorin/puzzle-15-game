@@ -5,10 +5,11 @@ import '@/scss';
 import { PuzzleGame } from './puzzle/PuzzleGame';
 
 const game = new PuzzleGame('#puzzle', {
-    size: 5,
+    image: 'http://cs.pikabu.ru/images/jobseeker/logo2.png',
     slider: true,
-    image: 'http://cs.pikabu.ru/images/jobseeker/logo2.png'
+    size: 5
 });
 
 game.init = game.init.bind(game);
+
 document.addEventListener('DOMContentLoaded', game.init);

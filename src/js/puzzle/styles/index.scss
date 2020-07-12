@@ -1,14 +1,9 @@
 $grey: #D0D0D0;
-
 $green-light: #D8FFBC;
 $green-middle: #8AC858;
 $green-dark: #83BE54;
 
-$bdrs: 3px;
-
-:root {
-    --puzzle-game-image: 'logo.png';
-}
+$border-radius: 3px;
 
 .puzzle-game {
     width: 100%;
@@ -19,7 +14,7 @@ $bdrs: 3px;
     &__board {
         position: relative;
         background: $grey;
-        border-radius: $bdrs;
+        border-radius: $border-radius;
     }
 
     &__tile {
@@ -28,7 +23,7 @@ $bdrs: 3px;
         background-image: var(--puzzle-game-image);
         background-color: $green-dark;
         overflow: hidden;
-        border-radius: $bdrs;
+        border-radius: $border-radius;
         box-shadow: 0 0 1px 1px $green-light;
     }
 

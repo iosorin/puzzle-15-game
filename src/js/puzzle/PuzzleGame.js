@@ -28,10 +28,10 @@ export class PuzzleGame extends BaseComponent {
         const $gameRoot = $.create('div', 'puzzle-game');
 
         this.components = this.components.map((Component) => {
-            const $componentRoot = $.create(Component.tagName || 'div' , Component.className);
+            const $componentRoot = $.create('div', Component.className);
             const component = new Component($componentRoot, this.emitter, this.options);
 
-            if (component.toHTML) {
+            if (component.toHTML().length) {
                 $componentRoot.html(component.toHTML());
                 $gameRoot.append($componentRoot);
             }

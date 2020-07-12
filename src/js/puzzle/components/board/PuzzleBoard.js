@@ -1,4 +1,4 @@
-import { create } from './board.template';
+import { createBoard } from './board.template';
 import { BaseComponent } from '@puzzle/core/BaseComponent';
 
 class PuzzleBoard extends BaseComponent {
@@ -14,28 +14,34 @@ class PuzzleBoard extends BaseComponent {
         this.height = 0;
     }
 
+    get template() {
+        return createBoard(this.state);
+    }
+
     init() {
         super.init();
 
+        this.listen();
+    }
+
+
+    listen() {
         this.$on('image:loaded', (imageParams) => {
-            console.log('image:loaded');
             this.scale = this.$root.coords().width / imageParams.width;
 
             this.width = imageParams.width * this.scale;
             this.height = imageParams.height * this.scale;
+
+            this.setState({ image: imageParams });
         });
 
-        this.$on('puzzle:keydown', (e) => {
-            console.log('puzzle:keydown', e);
-        });
+        this.$on('puzzle:keydown', (e) => {});
 
-        this.$on('slider:change', size => {
-            console.log('size', size);
-        });
+        this.$on('slider:change', (size) => {});
     }
 
     toHTML() {
-        return create();
+        return this.template;
     }
 }
 

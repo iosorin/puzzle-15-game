@@ -1,8 +1,6 @@
 import { BaseComponent } from '@puzzle/core/BaseComponent';
 
 class PuzzleImage extends BaseComponent {
-    static tagName = "style";
-
     constructor($root, emitter, options) {
         super($root, {
             name,
@@ -22,7 +20,13 @@ class PuzzleImage extends BaseComponent {
             this.width = width;
             this.height = height;
 
-            this.$emit('image:loaded', { image, width, height });
+            const imageParams = {
+                src: image.src,
+                width,
+                height
+            };
+
+            this.$emit('image:loaded', imageParams);
         });
     }
 
@@ -35,14 +39,6 @@ class PuzzleImage extends BaseComponent {
                 resolve(this);
             }, false);
         });
-    }
-
-    toHTML() {
-        return `
-            .puzzle-game__board > div {
-                background-image: url(${ this.src })
-            }
-        `;
     }
 }
 

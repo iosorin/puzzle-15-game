@@ -1,6 +1,6 @@
 import { BaseComponent } from "../core/BaseComponent";
 
-class Slider extends BaseComponent {
+class PuzzleSlider extends BaseComponent {
     static className = 'puzzle-game__slider';
 
     constructor($root, emitter, options) {
@@ -49,4 +49,4 @@ function interval(value, min, max) {
     return (value > max) ? max : value;
 }
 
-export default Slider;
+export default PuzzleSlider;

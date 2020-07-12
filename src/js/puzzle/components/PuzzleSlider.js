@@ -29,19 +29,23 @@ class PuzzleSlider extends BaseComponent {
     }
 
     updateSize(size = this.size) {
-        this.size = interval(size, this.min, this.max);
+        this.size = inInterval(size, this.min, this.max);
 
         this.$emit('slider:change', this.size);
     }
 
     toHTML() {
-        return this.show ? (`
-            <input type="range" min="${ this.min }" max="${ this.max }" value="${ this.size || this.cols }">
-        `) : '';
+        if (!this.show) return '';
+
+        return (
+            `
+                <input type="range" min="${ this.min }" max="${ this.max }" value="${ this.size || this.cols }">
+            `
+        );
     }
 }
 
-function interval(value, min, max) {
+function inInterval(value, min, max) {
     if (value < min) {
         return min;
     }

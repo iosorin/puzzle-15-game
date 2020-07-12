@@ -21,7 +21,7 @@ export class PuzzleGame extends BaseComponent {
         this.components = components || [];
 
         this.$container = $(selector);
-        this.options = merge(initialOptions, options);
+        this.options = { ...initialOptions, ...options };
     }
 
     gameRoot() {

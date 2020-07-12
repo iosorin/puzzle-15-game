@@ -4,14 +4,13 @@ import { BaseComponent } from '@puzzle/core/BaseComponent';
 class PuzzleBoard extends BaseComponent {
     static className = 'puzzle-game__board';
 
-    constructor($root, emitter) {
+    constructor($root, emitter, options) {
         super($root, {
             name,
             emitter
         });
 
-        this.width = 0;
-        this.height = 0;
+        this.options = options;
     }
 
     get template() {
@@ -21,23 +20,34 @@ class PuzzleBoard extends BaseComponent {
     init() {
         super.init();
 
+        this.initState({
+            width: 0,
+            height: 0,
+            size: this.options.size,
+            margin: this.options.margin
+        });
+
         this.listen();
     }
 
-
     listen() {
         this.$on('image:loaded', (imageParams) => {
-            this.scale = this.$root.coords().width / imageParams.width;
+            const scale = this.$root.coords().width / imageParams.width;
 
-            this.width = imageParams.width * this.scale;
-            this.height = imageParams.height * this.scale;
+            const width = imageParams.width * scale;
+            const height = imageParams.height * scale;
 
-            this.setState({ image: imageParams });
+            this.setState({
+                width, height,
+                image: imageParams
+            });
         });
 
         this.$on('puzzle:keydown', (e) => {});
 
-        this.$on('slider:change', (size) => {});
+        this.$on('slider:change', (size) => {
+            this.setState({ size });
+        });
     }
 
     toHTML() {

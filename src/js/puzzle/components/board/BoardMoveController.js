@@ -10,7 +10,7 @@ export class BoardMoveController {
         return this.tiles.find(tile => tile.empty);
     }
 
-    shuffle() {
+    shuffle(delay = this.shuffleDelay) {
         this.tiles = shuffleFisherYates(this.tiles)
             .map((tile, index, arr) => {
                 const next = arr[index + 1];
@@ -24,7 +24,7 @@ export class BoardMoveController {
 
         setTimeout(() => {
             this.animate(this.tiles);
-        }, this.shuffleDelay);
+        }, delay);
     }
 
     resolve() {
@@ -77,10 +77,10 @@ export class BoardMoveController {
         const { col, row } = this.emptyTile;
 
         const positions = {
-            up: { col, row: row - 1 },
-            down: { col, row: row + 1 },
-            left: { col: col - 1, row },
-            right: { col: col + 1, row }
+            left: { col, row: row - 1 },
+            right: { col, row: row + 1 },
+            up: { col: col - 1, row },
+            down: { col: col + 1, row }
         };
 
         const target = this.tiles.find((tile) => {

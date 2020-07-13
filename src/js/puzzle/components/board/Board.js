@@ -41,7 +41,6 @@ class PuzzleBoard extends BaseComponent {
     }
 
     onClick(e) {
-        console.log('onClick');
         if (!e.target) return;
 
         this.moveController.moveTile(e.target);

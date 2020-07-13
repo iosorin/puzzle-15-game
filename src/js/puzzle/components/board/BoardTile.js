@@ -15,6 +15,8 @@ export class BoardTile {
         this.row = index % size;
         this.id = `${this.col}:${this.row}`;
 
+        this.shakeAnimation = 600;
+
         this.init();
     }
 
@@ -54,6 +56,6 @@ export class BoardTile {
 
         setTimeout(() => {
             this.el.toggleClass('shaking', false);
-        }, 400);
+        }, this.shakeAnimation);
     }
 }

@@ -1,4 +1,4 @@
-import { BaseComponent } from "@puzzle/core/BaseComponent";
+import { BaseComponent } from '@puzzle/core/BaseComponent';
 import { create } from './slider.template';
 
 class PuzzleSlider extends BaseComponent {
@@ -8,7 +8,6 @@ class PuzzleSlider extends BaseComponent {
         const listeners = ['change'];
 
         super($root, {
-            name,
             listeners,
             emitter
         });

@@ -22,17 +22,15 @@ export class DomListener {
         this.listeners.forEach((listener) => {
             const method = getMethodName(listener);
 
-            // Method is not implemented
             if (!this[method]) {
+                // eslint-disable-next-line no-console
                 console.warn(`DomListener.js: Method ${ method } is not implemented in ${ this.name } component`);
 
                 return;
             }
 
-            // Bind context in this way so that you can actually REMOVE event listener later
             this[method] = this[method].bind(this);
 
-            // Same as addEventListener
             this.$root.on(listener, this[method]);
         });
     }

@@ -15,19 +15,25 @@
         "no-unused-expressions": 2,
         "no-unused-vars": 1,
         "no-trailing-spaces": 1,
-        "object-curly-spacing": [
-            "error",
-            "always"
-        ],
+        "array-bracket-spacing": [2, "never"],
+        "object-curly-spacing": [2, "always"],
         "space-before-blocks": [2, "always"],
+        "space-infix-ops": [2, { "int32Hint": false }],
+        "brace-style": [1, "stroustrup"],
+        "space-before-function-paren": [2, "never"],
+        "space-in-parens": [2, "never"],
         "keyword-spacing": [
             2,
             {
                 "before": true
             }
         ],
+        "quotes": [
+            2,
+            "single"
+        ],
         "comma-dangle": [
-            "error",
+            2,
             "never"
         ],
         "indent": [
@@ -39,8 +45,6 @@
                 ],
                 "SwitchCase": 1
             }
-        ],
-        "brace-style": [1, "stroustrup"],
-        "space-before-function-paren": ["error", "never"]
+        ]
     }
 }

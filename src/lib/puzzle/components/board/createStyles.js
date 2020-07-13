@@ -1,4 +1,4 @@
-import { $ } from '@puzzle/core/dom';
+import { $ } from '@core/dom';
 
 const createStyles = (image, width, height) => {
     if (!image?.src) return '';

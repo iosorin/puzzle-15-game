@@ -1,10 +1,8 @@
-import { BaseComponent } from '@puzzle/core/BaseComponent';
+import { BaseComponent } from '@core/BaseComponent';
 
 class PuzzleImage extends BaseComponent {
     constructor($root, emitter, options) {
-        super($root, {
-            emitter
-        });
+        super($root, { emitter });
 
         this.src = options.image;
         this.width = 0;

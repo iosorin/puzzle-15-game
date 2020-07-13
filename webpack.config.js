@@ -17,7 +17,7 @@ module.exports = {
     mode: process.env.NODE_ENV,
     context: path.resolve(__dirname, 'src'),
     entry: {
-        app: ['@babel/polyfill', './js/app.js']
+        main: ['@babel/polyfill', './index.js']
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -52,7 +52,8 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            '@puzzle': path.resolve(__dirname, 'src/js/puzzle')
+            '@puzzle': path.resolve(__dirname, 'src/lib/puzzle'),
+            '@core': path.resolve(__dirname, 'src/lib/puzzle/core')
         },
         extensions: ['.js', '.css', '.scss', '.sass']
     },

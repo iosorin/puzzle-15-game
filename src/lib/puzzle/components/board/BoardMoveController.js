@@ -1,4 +1,4 @@
-import { $ } from '@puzzle/core/dom';
+import { $ } from '@core/dom';
 
 export class BoardMoveController {
     constructor(tiles = [], shuffleDelay) {
@@ -10,7 +10,10 @@ export class BoardMoveController {
         return this.tiles.find(tile => tile.empty);
     }
 
-    swap(a, b) {
+    swap(tiles) {
+        if (!tiles?.length) return;
+
+        const [a, b] = tiles;
         const tempCol = a.col;
         const tempRow = a.row;
 
@@ -26,7 +29,7 @@ export class BoardMoveController {
                 const next = arr[index + 1];
 
                 if (next) {
-                    this.swap(tile, next);
+                    this.swap([tile, next]);
                 }
 
                 return tile;
@@ -48,7 +51,7 @@ export class BoardMoveController {
         this.animate(this.tiles);
     }
 
-    checkResolve() {
+    checkResolved() {
         return !!this.tiles.every((tile) => {
             const [col, row] = tile.el.id(true);
             return tile.col === col && tile.row === row;
@@ -62,32 +65,19 @@ export class BoardMoveController {
         tiles.forEach(tile => tile.update());
     }
 
-    moveTile(tile) {
-        let canMove = false;
+    moveTiles(tiles) {
+        this.animate(this.swap(tiles));
 
-        const id = $(tile).id();
-        const target = this.tiles.find(tile => tile.id === id);
-
-        const { col, row } = this.emptyTile;
-
-        if (target.col === col) {
-            canMove = Math.abs(target.row - row) === 1;
-        }
-        else if (target.row === row) {
-            canMove = Math.abs(target.col - col) === 1;
-        }
-
-        if (canMove) {
-            this.animate(this.swap(target, this.emptyTile));
-        }
-        else {
-            target.shake();
-        }
-
-        return this.checkResolve();
+        return this.checkResolved();
     }
 
-    moveIn(direction) {
+    getEventTiles(e) {
+        if (!e) return;
+
+        return e.target ? this.clickTarget(e.target) : this.keydownTarget(e);
+    }
+
+    keydownTarget(direction) {
         direction = direction.toLowerCase().replace('move', '');
 
         const { col, row } = this.emptyTile;
@@ -105,10 +95,35 @@ export class BoardMoveController {
         });
 
         if (target) {
-            this.animate(this.swap(target, this.emptyTile));
+            return [target, this.emptyTile];
         }
 
-        return this.checkResolve();
+        return;
+    }
+
+    clickTarget(tile) {
+        let canMove = false;
+
+        const id = $(tile).id();
+        const target = this.tiles.find(tile => tile.id === id);
+
+        if (!target) return;
+
+        const { col, row } = this.emptyTile;
+
+        if (target.col === col) {
+            canMove = Math.abs(target.row - row) === 1;
+        }
+        else if (target.row === row) {
+            canMove = Math.abs(target.col - col) === 1;
+        }
+
+        if (canMove) {
+            return [target, this.emptyTile];
+        }
+        else {
+            target.shake();
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-import { $ } from '@puzzle/core/dom';
+import { $ } from '@core/dom';
 
 export class BoardTile {
     static className = 'puzzle-game__tile';

@@ -2,7 +2,7 @@
 import '@/scss';
 
 // puzzle plugin
-import { PuzzleGame } from './puzzle/PuzzleGame';
+import { PuzzleGame } from '@puzzle/PuzzleGame';
 
 const game = new PuzzleGame('#puzzle', {
     image: 'http://cs.pikabu.ru/images/jobseeker/logo2.png',

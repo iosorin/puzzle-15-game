@@ -1,6 +1,6 @@
-import { BaseComponent } from '@puzzle/core/BaseComponent';
-import { BoardTile } from './BoardTile';
+import { BaseComponent } from '@core/BaseComponent';
 import { BoardMoveController } from './BoardMoveController';
+import { BoardTile } from './BoardTile';
 import { createStyles } from './createStyles';
 
 class PuzzleBoard extends BaseComponent {
@@ -25,11 +25,12 @@ class PuzzleBoard extends BaseComponent {
 
         this.moveController = new BoardMoveController(this.tiles, this.options.shuffleDelay);
 
-        this.$on('size:changed', (size) => this.createBoard(size));
-        this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
-        this.$on('puzzle:move', (direction) => this.directionMove(direction));
-        this.$on('puzzle:shuffle', () => this.moveController.shuffle(0));
+        this.$on('puzzle:keydown', (direction) => this.onMove(direction));
+        this.$on('puzzle:shuffle', (delay) => this.moveController.shuffle(delay));
         this.$on('puzzle:resolve', () => this.moveController.resolve());
+        this.$on('history:changed', (tiles) => this.moveController.moveTiles(tiles));
+        this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
+        this.$on('size:changed', (size) => this.createBoard(size));
     }
 
     onImageLoaded(params) {
@@ -71,22 +72,24 @@ class PuzzleBoard extends BaseComponent {
         this.moveController.shuffle();
     }
 
-    onClick(e) {
-        if (!e.target) return;
+    onMove(e) {
+        const tiles = this.moveController.getEventTiles(e);
 
-        const solved = this.moveController.moveTile(e.target);
+        if (tiles) {
+            this.$emit('history:push', tiles);
 
-        if (solved) {
-            this.$emit('board:resolved');
+            const resolved = this.moveController.moveTiles(tiles);
+
+            if (resolved) {
+                this.$emit('board:resolved');
+
+                return;
+            }
         }
     }
 
-    directionMove(direction) {
-        const solved = this.moveController.moveTile(direction);
-
-        if (solved) {
-            this.$emit('board:resolved');
-        }
+    onClick(event) {
+        this.onMove(event);
     }
 }
 

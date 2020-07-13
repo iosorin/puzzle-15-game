@@ -54,10 +54,11 @@ export class PuzzleGame extends BaseComponent {
     }
 
     listen() {
-        this.$on('board:resolved', this.onSuccess);
+        this.onResolve = this.onResolve.bind(this);
+        this.$on('board:resolved', this.onResolve);
     }
 
-    onSuccess() {
+    onResolve() {
         const startNewGame = confirm('Well done, the puzzle is assembled! Do you want to play again?');
 
         if (startNewGame) {
@@ -69,7 +70,7 @@ export class PuzzleGame extends BaseComponent {
         const event = keymapEvent(keymap, e);
 
         if (event) {
-            this.$emit('puzzle:move', event);
+            this.$emit('puzzle:keydown', event);
         }
     }
 

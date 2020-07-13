@@ -111,7 +111,7 @@ class Dom {
             .forEach(name => this.$el.style[name] = styles[name] + prefix);
     }
 
-    getStyle( styles = {}, defaultStyles = false ) {
+    getStyle(styles = {}, defaultStyles = false) {
         return styles.reduce((res, s) => {
             let style = this.$el.style[s];
 

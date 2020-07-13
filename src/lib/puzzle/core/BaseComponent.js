@@ -1,11 +1,11 @@
 import { DomListener } from './DomListener';
 
 export class BaseComponent extends DomListener {
-    constructor($root, componentOptions = {}) {
-        super($root, componentOptions.listeners);
+    constructor($root, options = {}) {
+        super($root, options.listeners);
 
-        this.name = componentOptions.name || '';
-        this.emitter = componentOptions.emitter;
+        this.name = options.name || '';
+        this.emitter = options.emitter;
 
         this.unsubscribers = [];
 

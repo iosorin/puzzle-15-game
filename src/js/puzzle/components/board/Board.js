@@ -28,16 +28,8 @@ class PuzzleBoard extends BaseComponent {
         this.$on('size:change', (size) => this.createBoard(size));
         this.$on('puzzle:move', (direction) => this.directionMove(direction));
         this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
-
-        this.test();
-    }
-
-    test() {
-        const test = document.querySelector('.test');
-
-        test.addEventListener('click', () => {
-            this.moveController.resolve();
-        });
+        this.$on('buttons:shuffle', () => this.moveController.shuffle(0));
+        this.$on('buttons:resolve', () => this.moveController.resolve());
     }
 
     onClick(e) {

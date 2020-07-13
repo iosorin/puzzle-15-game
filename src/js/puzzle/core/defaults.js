@@ -11,6 +11,7 @@ const keymap = {
 
 const options = {
     image: 'https://picsum.photos/500/500',
+    buttons: ['shuffle', 'resolve', 'undo', 'redo'],
     shuffleDelay: 1000,
     slider: false,
     margin: 10,

@@ -4,7 +4,7 @@ $grey: #D0D0D0;
 $green-light: #D8FFBC;
 $green-middle: #8AC858;
 $green-dark: #83BE54;
-
+$button-color: #EFEFEF;
 $border-radius: 3px;
 
 .puzzle-game {
@@ -60,6 +60,27 @@ $border-radius: 3px;
                 background: $green-dark;
             }
         }
+    }
 
+    &__buttons {
+        margin-top: 15px;
+        text-align: center;
+
+        button {
+            font-size: 14px;
+            text-transform: capitalize;
+            padding: 4px 14px;
+            border-radius: $border-radius;
+            background: $button-color;
+            transition: background .1s ease-out;
+
+            &:not(:last-child) {
+                margin-right: 6px;
+            }
+
+            &:hover {
+                background: darken($button-color, 10);
+            }
+        }
     }
 }

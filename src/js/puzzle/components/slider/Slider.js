@@ -1,4 +1,5 @@
-import { BaseComponent } from "../core/BaseComponent";
+import { BaseComponent } from "@puzzle/core/BaseComponent";
+import { create } from './slider.template';
 
 class PuzzleSlider extends BaseComponent {
     static className = 'puzzle-game__slider';
@@ -15,7 +16,7 @@ class PuzzleSlider extends BaseComponent {
         this.min = options.min;
         this.max = options.max;
         this.size = options.size;
-        this.show = options.slider;
+        this.show = !!options.slider;
     }
 
     init() {
@@ -37,11 +38,7 @@ class PuzzleSlider extends BaseComponent {
     toHTML() {
         if (!this.show) return '';
 
-        return (
-            `
-                <input type="range" min="${ this.min }" max="${ this.max }" value="${ this.size || this.cols }">
-            `
-        );
+        return create(this.size, this.min, this.max);
     }
 }
 

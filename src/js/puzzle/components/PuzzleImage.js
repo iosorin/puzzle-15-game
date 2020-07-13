@@ -3,7 +3,6 @@ import { BaseComponent } from '@puzzle/core/BaseComponent';
 class PuzzleImage extends BaseComponent {
     constructor($root, emitter, options) {
         super($root, {
-            name,
             emitter
         });
 

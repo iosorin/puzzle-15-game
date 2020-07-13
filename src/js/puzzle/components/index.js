@@ -1,8 +1,10 @@
-import PuzzleImage from './Image';
-import PuzzleSlider from './Slider';
+import PuzzleHistory from './PuzzleHistory';
+import PuzzleButtons from './buttons/Buttons';
+import PuzzleSlider from './slider/Slider';
 import PuzzleBoard from './board/Board';
+import PuzzleImage from './PuzzleImage';
 
-const components = [PuzzleBoard, PuzzleImage, PuzzleSlider];
+const components = [PuzzleHistory,  PuzzleImage, PuzzleButtons, PuzzleBoard, PuzzleSlider];
 
 export {
     components

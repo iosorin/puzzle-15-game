@@ -10,6 +10,16 @@ export class BoardMoveController {
         return this.tiles.find(tile => tile.empty);
     }
 
+    swap(a, b) {
+        const tempCol = a.col;
+        const tempRow = a.row;
+
+        [a.col, a.row] = [b.col, b.row];
+        [b.col, b.row] = [tempCol, tempRow];
+
+        return [a, b];
+    }
+
     shuffle(delay = this.shuffleDelay) {
         this.tiles = shuffleFisherYates(this.tiles)
             .map((tile, index, arr) => {
@@ -38,14 +48,18 @@ export class BoardMoveController {
         this.animate(this.tiles);
     }
 
-    swap(a, b) {
-        const tempCol = a.col;
-        const tempRow = a.row;
+    checkResolve() {
+        return !!this.tiles.every((tile) => {
+            const [col, row] = tile.el.id(true);
+            return tile.col === col && tile.row === row;
+        });
+    }
 
-        [a.col, a.row] = [b.col, b.row];
-        [b.col, b.row] = [tempCol, tempRow];
+    // TODO: add async waiting for animation end
+    animate(tiles) {
+        if (!tiles) return;
 
-        return [a, b];
+        tiles.forEach(tile => tile.update());
     }
 
     moveTile(tile) {
@@ -69,6 +83,8 @@ export class BoardMoveController {
         else {
             target.shake();
         }
+
+        return this.checkResolve();
     }
 
     moveIn(direction) {
@@ -91,12 +107,8 @@ export class BoardMoveController {
         if (target) {
             this.animate(this.swap(target, this.emptyTile));
         }
-    }
 
-    animate(tiles) {
-        if (tiles) {
-            tiles.forEach(tile => tile.update());
-        }
+        return this.checkResolve();
     }
 }
 

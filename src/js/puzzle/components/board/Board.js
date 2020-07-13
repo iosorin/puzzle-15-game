@@ -25,17 +25,11 @@ class PuzzleBoard extends BaseComponent {
 
         this.moveController = new BoardMoveController(this.tiles, this.options.shuffleDelay);
 
-        this.$on('size:change', (size) => this.createBoard(size));
-        this.$on('puzzle:move', (direction) => this.directionMove(direction));
+        this.$on('size:changed', (size) => this.createBoard(size));
         this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
-        this.$on('buttons:shuffle', () => this.moveController.shuffle(0));
-        this.$on('buttons:resolve', () => this.moveController.resolve());
-    }
-
-    onClick(e) {
-        if (!e.target) return;
-
-        this.moveController.moveTile(e.target);
+        this.$on('puzzle:move', (direction) => this.directionMove(direction));
+        this.$on('puzzle:shuffle', () => this.moveController.shuffle(0));
+        this.$on('puzzle:resolve', () => this.moveController.resolve());
     }
 
     onImageLoaded(params) {
@@ -77,8 +71,22 @@ class PuzzleBoard extends BaseComponent {
         this.moveController.shuffle();
     }
 
+    onClick(e) {
+        if (!e.target) return;
+
+        const solved = this.moveController.moveTile(e.target);
+
+        if (solved) {
+            this.$emit('board:resolved');
+        }
+    }
+
     directionMove(direction) {
-        this.moveController.moveIn(direction);
+        const solved = this.moveController.moveTile(direction);
+
+        if (solved) {
+            this.$emit('board:resolved');
+        }
     }
 }
 

@@ -14,7 +14,6 @@ const options = {
     buttons: ['shuffle', 'resolve', 'undo', 'redo'],
     shuffleDelay: 1000,
     slider: false,
-    margin: 10,
     size: 5,
     min: 5,
     max: 10

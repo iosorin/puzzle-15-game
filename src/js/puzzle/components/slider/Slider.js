@@ -28,7 +28,7 @@ class PuzzleSlider extends BaseComponent {
     updateSize(size = this.size) {
         this.size = inInterval(size, this.min, this.max);
 
-        this.$emit('size:change', this.size);
+        this.$emit('size:changed', this.size);
     }
 
     onChange(e) {

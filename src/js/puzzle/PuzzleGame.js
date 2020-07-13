@@ -43,20 +43,34 @@ export class PuzzleGame extends BaseComponent {
         return $gameRoot;
     }
 
-    onKeydown(e) {
-        const event = keymapEvent(keymap, e);
-
-        if (event) {
-            this.$emit('puzzle:move', event);
-        }
-    }
-
     init() {
         super.init();
 
         this.$container.append(this.gameRoot());
 
         this.components.forEach(component => component.init());
+
+        this.listen();
+    }
+
+    listen() {
+        this.$on('board:resolved', this.onSuccess);
+    }
+
+    onSuccess() {
+        const startNewGame = confirm('Well done, the puzzle is assembled! Do you want to play again?');
+
+        if (startNewGame) {
+            this.$emit('puzzle:shuffle');
+        }
+    }
+
+    onKeydown(e) {
+        const event = keymapEvent(keymap, e);
+
+        if (event) {
+            this.$emit('puzzle:move', event);
+        }
     }
 
     destroy() {

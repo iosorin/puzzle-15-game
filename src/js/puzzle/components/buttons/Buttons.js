@@ -19,10 +19,9 @@ class PuzzleButtons extends BaseComponent {
 
     onClick(e) {
         const $target = $(e.target);
+        const { action } = $target.data;
 
-        if ($target.data.action) {
-            this.$emit(`buttons:${$target.data.action}`);
-        }
+        this.$emit(`puzzle:${action}`);
     }
 
     toHTML() {

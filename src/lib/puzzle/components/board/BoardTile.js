@@ -3,22 +3,24 @@ import { $ } from '@core/dom';
 export class BoardTile {
     static className = 'puzzle-game__tile';
 
-    constructor({ size, index, empty, width: boardWidth, height: boardHeight } = {}) {
+    constructor({ size, col, row, width, height,id, index, empty, boardWidth, boardHeight } = {}) {
         this.size = size;
         this.index = index;
         this.empty = empty;
 
-        this.width = boardWidth / size;
-        this.height = boardHeight / size;
+        this.width = width || boardWidth / size;
+        this.height = height || boardHeight / size;
+        this.col = col || Math.floor(index / size);
+        this.row = row || index % size;
 
-        this.col = Math.floor(index / size);
-        this.row = index % size;
-        this.id = `${this.col}:${this.row}`;
+        this.id = id || `${this.col}:${this.row}`;
 
         this.shakeAnimation = 600;
 
         this.init();
     }
+
+    // store styles with col && row
 
     get styles() {
         const top = this.col * this.height;
@@ -47,7 +49,13 @@ export class BoardTile {
         this.update();
     }
 
-    update() {
+    update(params) {
+        if (params) {
+            this.width = params.width / this.size;
+            this.height = params.height / this.size;
+        }
+
+
         this.el.css(this.styles, 'px');
     }
 

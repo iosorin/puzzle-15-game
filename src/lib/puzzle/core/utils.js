@@ -18,14 +18,6 @@ function storage(key, data = null) {
     return JSON.parse(localStorage.getItem(key));
 }
 
-function isEqual(a, b) {
-    if (typeof a === 'object' && b === 'object') {
-        return JSON.stringify(a) === JSON.stringify(b);
-    }
-
-    return a === b;
-}
-
 function camelToDashCase(str) {
     return str.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
 }
@@ -70,12 +62,29 @@ function keymapEvent(keymap, e) {
     return keymap[keyCode];
 }
 
+function replaceObjects(target, source, key, intersection = false) {
+    if (!Array.isArray(target) || !Array.isArray(source)) return;
+
+    const method = intersection ? 'filter' : 'map';
+
+    return target[method](a => source.find(b => b[key] === a[key]) || a);
+}
+
+function isEqual(a, b) {
+    if (typeof a === 'object' && b === 'object') {
+        return JSON.stringify(a) === JSON.stringify(b);
+    }
+
+    return a === b;
+}
+
 export {
     debounce,
     capitalize,
     storage,
-    isEqual,
     toInlineStyles,
     clone,
-    keymapEvent
+    keymapEvent,
+    replaceObjects,
+    isEqual
 };

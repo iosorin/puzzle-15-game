@@ -1,4 +1,6 @@
-// Класс, в котором шаблон автоматически перерендывается на изменениях state
+/**
+ * BaseStateComponent - rerender the template according to the state changes
+ */
 import { BaseComponent } from './BaseComponent';
 
 export class BaseStateComponent extends BaseComponent {

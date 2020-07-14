@@ -4,15 +4,12 @@ class Dom {
     }
 
     html(html) {
-        // setter
         if (typeof html === 'string') {
             this.$el.innerHTML = html;
 
-            // Return instance to continue chain
             return this;
         }
 
-        // getter
         return this.$el.outerHTML.trim();
     }
 
@@ -51,54 +48,24 @@ class Dom {
         return this;
     }
 
-    text(text) {
-        // Setter
-        if (typeof text !== 'undefined') {
-            this.$el.textContent = text;
-
-            return this;
-        }
-
-        // Getters
-        if (this.$el.tagName.toLowerCase() === 'input') {
-            return this.$el.value.trim();
-        }
-
-        return this.$el.textContent.trim();
-    }
-
-    is(selector) {
-        if (selector) {
-            return this.$el.classList.contains(selector.replace('.', ''));
-        }
-
-        return this.$el.tagName.toLowerCase();
-    }
-
-    closest(selector) {
-        return $(this.$el.closest(selector));
+    parent() {
+        return $(this.$el.parentNode);
     }
 
     coords() {
         return this.$el.getBoundingClientRect();
     }
 
-    focus() {
-        this.$el.focus();
+    replace(newChild, selector) {
+        const oldChild = this.find(selector);
 
-        return this;
+        this.$el.replaceChild(newChild.$el, oldChild.$el);
     }
 
     find(selector) {
         const element = this.$el.querySelector(selector);
 
         return $(element);
-    }
-
-    findAll(selector) {
-        const elements = Array.from(this.$el.querySelectorAll(selector));
-
-        return elements.map(el => $(el));
     }
 
     toggleClass(classList, add = true) {
@@ -109,20 +76,6 @@ class Dom {
         Object
             .keys(styles)
             .forEach(name => this.$el.style[name] = styles[name] + prefix);
-    }
-
-    getStyle(styles = {}, defaultStyles = false) {
-        return styles.reduce((res, s) => {
-            let style = this.$el.style[s];
-
-            if (!style && typeof defaultStyles === 'object') {
-                style = defaultStyles[s];
-            }
-
-            res[s] = style;
-
-            return res;
-        }, {});
     }
 
     append(node) {

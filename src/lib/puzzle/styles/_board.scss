@@ -1,0 +1,27 @@
+.puzzle-game {
+    &__board {
+        position: relative;
+        background: $grey;
+        border-radius: $border-radius;
+    }
+
+    &__tile {
+        position: absolute;
+        transition: all 0.6s;
+        background-image: var(--puzzle-game-image);
+        background-color: $green-dark;
+        overflow: hidden;
+        border-radius: $border-radius;
+        border: 1px solid $green-light;
+
+        &.empty {
+            background: none;
+            box-shadow: none;
+            border: none;
+        }
+
+        &.shaking {
+            animation: shake .6s infinite;
+        }
+    }
+}

@@ -1,27 +1,23 @@
+/* eslint-disable no-case-declarations */
 import { $ } from '@core/dom';
-import { create } from './buttons.temlate';
+import { config } from '@puzzle/constants';
 import { BaseStateComponent } from '@puzzle/core/BaseStateComponent';
-
-const emitMap = {
-    undo: 'history:undo',
-    redo: 'history:redo',
-    shuffle: 'puzzle:shuffle',
-    resolve: 'puzzle:resolve'
-};
+import { create } from './buttons.temlate';
 
 class PuzzleButtons extends BaseStateComponent {
     static className = 'puzzle-game__buttons';
 
-    constructor($root, emitter, config) {
+    constructor($root, options) {
         const listeners = ['click'];
 
         super($root, {
             listeners,
-            emitter
+            ...options
         });
 
-        this.buttons = config.buttons;
-        this.show = config.buttons && config.buttons.length;
+        this.config = options.config;
+
+        this.buttons = this.config.buttons;
     }
 
     get template() {
@@ -31,43 +27,64 @@ class PuzzleButtons extends BaseStateComponent {
     init() {
         super.init();
 
+        if (this.buttons) {
+            if (!Array.isArray(this.buttons)) {
+                this.buttons = config.buttons;
+            }
+
+            this.setInitialState();
+
+        }
+
+        this.$on('history:reset',() => this.setInitialState());
+    }
+
+    setInitialState() {
         const { buttons } = this;
 
-        if (this.show) {
-            this.setState({
-                buttons,
-                undo: true,
-                redo: true
-            });
+        this.setState({
+            buttons,
+            undo: this.store.get()?.history?.executed.length,
+            redo: this.store.get()?.history?.unexecuted.length
+        });
 
-            this.$on('history:changed', (changed = {}) => {
-                if ('undo' in changed) {
-                    this.setState({ undo: changed.undo });
-                }
+        this.$on('history:changed', (changes = {}) => {
+            if ('undo' in changes) {
+                this.setState({ undo: changes.undo });
+            }
 
-                if ('redo' in changed) {
-                    this.setState({ redo: changed.undo });
-                }
-            });
-        }
+            if ('redo' in changes) {
+                this.setState({ redo: changes.redo });
+            }
+        });
     }
 
     onClick(e) {
         const $target = $(e.target);
-        const { action } = $target.data;
 
-        if (action) {
-            if (emitMap[action] === emitMap.shuffle) {
-                this.$emit(emitMap[action], 0); // delay
-            }
-            else {
-                this.$emit(emitMap[action]);
-            }
+        switch ($target.data.action) {
+            case 'undo':
+                this.$emit('history:undo');
+                break;
+            case 'redo':
+                this.$emit('history:redo');
+                break;
+            case 'shuffle':
+                this.$emit('puzzle:shuffle', 0);
+                break;
+            case 'resolve':
+                this.$emit('puzzle:resolve');
+                break;
+            case 'changeImage':
+                this.$emit('image:change');
+                break;
+            default:
+                break;
         }
     }
 
     toHTML() {
-        if (!this.show) return '';
+        if (!this.buttons) return '';
 
         return this.template;
     }

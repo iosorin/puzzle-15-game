@@ -1,0 +1,62 @@
+.puzzle-game__buttons {
+    margin-top: 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .button {
+        cursor: pointer;
+        pointer-events: all;
+        flex: 1;
+        text-transform: capitalize;
+        border-radius: $border-radius;
+        background: $button-color;
+        opacity: 0.9;
+        transition: all .1s ease-out;
+        height: $button-height;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 8px;
+
+        &:not(:first-child) {
+            margin-left: 6px;
+        }
+
+        &:hover {
+            background: darken($button-color, 5%);
+            opacity: 1;
+        }
+
+        &[disabled] {
+            user-select: none;
+            pointer-events: none;
+            border:1px solid darken($button-color, 15%);
+            opacity: 0.45;
+        }
+
+        span, i {
+            pointer-events: none;
+        }
+
+        span {
+            font-size: 14px;
+
+            & + i {
+                margin:  2px 0 0 4px;
+                font-size: 14px;
+            }
+        }
+
+        i {
+            font-size: 18px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .puzzle-game__buttons{
+        text-align: right;
+    }
+}

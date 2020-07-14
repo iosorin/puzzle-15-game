@@ -1,16 +1,28 @@
 import { BaseComponent } from '@core/BaseComponent';
 
 class PuzzleImage extends BaseComponent {
-    constructor($root, emitter, config) {
-        super($root, { emitter });
+    constructor($root, options) {
+        super($root, options);
 
-        this.src = config.image;
+        this.src = options.config.image;
         this.width = 0;
         this.height = 0;
     }
 
     async init() {
-        await this.load(this.src).then((image) => {
+        super.init();
+
+        await this.load(this.src);
+
+        this.$on('image:change', () => {
+            const image = 'https://picsum.photos/500/500/?random&t=' + Date.now();
+
+            this.load(image);
+        });
+    }
+
+    async load(src) {
+        await this.loadImage(src).then((image) => {
             const [width, height] = [image.naturalWidth, image.naturalHeight];
 
             this.image = image;
@@ -24,10 +36,11 @@ class PuzzleImage extends BaseComponent {
             };
 
             this.$emit('image:loaded', imageParams);
+            this.store.save({ image: src });
         });
     }
 
-    load(url) {
+    loadImage(url) {
         return new Promise((resolve) => {
             const image = new Image();
             image.src = url;

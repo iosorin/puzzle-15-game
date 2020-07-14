@@ -4,12 +4,11 @@ export class BaseComponent extends DomListener {
     constructor($root, options = {}) {
         super($root, options.listeners);
 
-        this.name = options.name || '';
+        this.router = options.router;
         this.emitter = options.emitter;
+        this.store = options.store;
 
         this.unsubscribers = [];
-
-        this.onBeforeInit();
     }
 
     // EMITTER ========================================
@@ -24,8 +23,6 @@ export class BaseComponent extends DomListener {
     }
 
     // LIFECYCLES ========================================
-    onBeforeInit() {}
-
     init() {
         this.initDOMListeners();
     }
@@ -36,7 +33,7 @@ export class BaseComponent extends DomListener {
         this.unsubscribers.forEach(unsub => unsub());
     }
 
-    // Component Template
+    // TEMPLATE ========================================
     toHTML() {
         return '';
     }

@@ -1,9 +1,8 @@
 import { $ } from '@core/dom';
 
-export class BoardMoveController {
-    constructor(tiles = [], shuffleDelay) {
+export class BoardMoveAssistant {
+    constructor(tiles = []) {
         this.tiles = tiles;
-        this.shuffleDelay = shuffleDelay;
     }
 
     get emptyTile() {
@@ -11,19 +10,23 @@ export class BoardMoveController {
     }
 
     swap(tiles) {
-        if (!tiles?.length) return;
+        return new Promise((resolve) => {
+            if (!tiles?.length) {
+                resolve();
+            }
 
-        const [a, b] = tiles;
-        const tempCol = a.col;
-        const tempRow = a.row;
+            const [a, b] = tiles;
+            const tempCol = a.col;
+            const tempRow = a.row;
 
-        [a.col, a.row] = [b.col, b.row];
-        [b.col, b.row] = [tempCol, tempRow];
+            [a.col, a.row] = [b.col, b.row];
+            [b.col, b.row] = [tempCol, tempRow];
 
-        return [a, b];
+            resolve([a, b]);
+        });
     }
 
-    shuffle(delay = this.shuffleDelay) {
+    shuffle(delay = 0) {
         this.tiles = shuffleFisherYates(this.tiles)
             .map((tile, index, arr) => {
                 const next = arr[index + 1];
@@ -38,6 +41,7 @@ export class BoardMoveController {
         setTimeout(() => {
             this.animate(this.tiles);
         }, delay);
+
     }
 
     resolve() {
@@ -59,16 +63,17 @@ export class BoardMoveController {
     }
 
     // TODO: add async waiting for animation end
-    animate(tiles) {
-        if (!tiles) return;
-
-        tiles.forEach(tile => tile.update());
+    animate(tiles = this.tiles, params) {
+        tiles.forEach(tile => tile.update(params));
     }
 
-    moveTiles(tiles) {
-        this.animate(this.swap(tiles));
+    async moveTiles(tiles) {
+        this.animate(await this.swap(tiles));
 
-        return this.checkResolved();
+        return {
+            resolved: this.checkResolved(),
+            tiles
+        };
     }
 
     getEventTiles(e) {

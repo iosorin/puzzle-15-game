@@ -4,28 +4,30 @@ import { create } from './slider.template';
 class PuzzleSlider extends BaseComponent {
     static className = 'puzzle-game__slider';
 
-    constructor($root, emitter, config) {
+    constructor($root, options) {
         const listeners = ['change'];
 
         super($root, {
             listeners,
-            emitter
+            ...options
         });
 
-        this.min = config.min;
-        this.max = config.max;
-        this.size = config.size;
-        this.show = !!config.slider;
+        this.config = options.config;
+        this.size = this.config.size;
     }
 
     init() {
         super.init();
 
-        this.updateSize();
+        // this.updateSize();
     }
 
     updateSize(size = this.size) {
-        this.size = inInterval(size, this.min, this.max);
+        this.size = parseInt(inInterval(size, this.config.min, this.config.max), 10);
+
+        this.store.save({
+            size: this.size
+        });
 
         this.$emit('size:changed', this.size);
     }
@@ -35,9 +37,9 @@ class PuzzleSlider extends BaseComponent {
     }
 
     toHTML() {
-        if (!this.show) return '';
+        if (!this.config.slider) return ' ';
 
-        return create(this.size, this.min, this.max);
+        return create(this.size, this.config.min, this.config.max);
     }
 }
 

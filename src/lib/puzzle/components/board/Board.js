@@ -1,18 +1,19 @@
 import { BaseComponent } from '@core/BaseComponent';
-import { BoardMoveController } from './BoardMoveController';
+import { BoardMoveAssistant } from './BoardMoveAssistant';
 import { BoardTile } from './BoardTile';
 import { createStyles } from './createStyles';
+import { debounce } from '@core/utils';
 
 class PuzzleBoard extends BaseComponent {
     static className = 'puzzle-game__board';
 
-    constructor($root, emitter, config) {
+    constructor($root, options) {
         super($root, {
             listeners: ['click'],
-            emitter
+            ...options
         });
 
-        this.config = config;
+        this.config = options.config;
 
         this.width = 0;
         this.height = 0;
@@ -23,33 +24,50 @@ class PuzzleBoard extends BaseComponent {
     init() {
         super.init();
 
-        this.moveController = new BoardMoveController(this.tiles, this.config.shuffleDelay);
+        this.moveAssistant = new BoardMoveAssistant(this.tiles);
 
         this.$on('puzzle:keydown', (e) => this.onKeydown(e));
-        this.$on('puzzle:shuffle', (delay) => this.moveController.shuffle(delay));
-        this.$on('puzzle:resolve', () => this.moveController.resolve());
+        this.$on('puzzle:resolve', () => this.actionHandler('resolve'));
+        this.$on('puzzle:shuffle', (e) => this.actionHandler('shuffle', e));
+        this.$on('puzzle:resize', (e) => this.onResize(e));
+        this.$on('puzzle:hashchange', (e) => this.onHashChanged(e));
         this.$on('image:loaded', (params) => this.onImageLoaded(params));
-        this.$on('size:changed', (size) => this.createBoard(size));
-        this.$on('history:changed', ({ tiles }) => this.onHistoryChanged(tiles));
+        this.$on('size:changed', (size) => this.createBoard(size, true));
+        this.$on('history:changed', (e) => this.moveFromHistory(e));
+
+        this.moveFromHistory = debounce(this.moveFromHistory.bind(this), 10);
+    }
+
+    get coords() {
+        const par = this.$root.parent().coords().width;
+        const scale = par / this.image.width;
+
+        const width = this.image.width * scale;
+        const height = this.image.height * scale;
+
+        return { width, height };
+    }
+
+    get history() {
+        return this.store.get()?.history || {};
     }
 
     onImageLoaded(params) {
-        const scale = this.$root.coords().width / params.width;
+        this.image = params;
 
-        const width = params.width * scale;
-        const height = params.height * scale;
+        const { width, height } = this.coords;
 
         this.width = width;
         this.height = height;
-        this.image = params;
 
         this.createBoard();
     }
 
-    createBoard(size = this.config.size) {
+    createBoard(size = this.config.size, sizeEvt = false) {
         this.$root.clear();
-
         this.$root.append(createStyles(this.image, this.width, this.height));
+
+        const loadFromStore = Object.keys(this.history).length && !sizeEvt;
 
         this.tiles = Array(Math.pow(size, 2))
             .fill(0)
@@ -57,58 +75,127 @@ class PuzzleBoard extends BaseComponent {
                 const tile = new BoardTile({
                     size,
                     index,
-                    width: this.width,
-                    height: this.height,
+                    boardWidth: this.width,
+                    boardHeight: this.height,
                     empty: (index === this.emptyIdx)
                 });
 
                 return tile;
             });
 
+        if (loadFromStore) {
+            this.merge(this.store.get()?.tiles);
+        }
 
         this.tiles.forEach(tile => this.$root.append(tile.el));
+        this.moveAssistant.tiles = this.tiles;
 
-        this.moveController.tiles = this.tiles;
-        this.moveController.shuffle();
+        this.boardCreated(!loadFromStore);
     }
 
-    onHistoryChanged(tiles) {
-        if (!tiles) return;
+    boardCreated(shuffleAfter = true) {
+        if (shuffleAfter) {
+            this.actionHandler('shuffle', this.config.shuffleDelay);
+        }
+        else {
+            this.moveAssistant.animate(this.tiles);
+            this.navigate();
+        }
 
-        // get instance
-        tiles = this.tiles.filter(t => tiles.find(tile => tile.id === t.id));
-
-        // move tiles
-        this.moveController.moveTiles(tiles);
+        this.$emit('history:watch', {
+            tiles: this.tiles
+        });
     }
 
-    onMove(e) {
-        const tiles = this.moveController.getEventTiles(e);
+    merge(tiles) {
+        if (tiles) {
+            this.tiles = this.tiles.map((tile) => {
+                const stored = tiles.find(s => s.id === tile.id);
+
+                if (stored) {
+                    const temp = tile.el;
+                    Object.assign(tile, stored);
+                    tile.el = temp;
+                }
+
+                return tile;
+            });
+        }
+    }
+
+    resetHistory() {
+        this.store.clear();
+
+        this.$emit('history:reset');
+        this.$emit('history:watch', {
+            tiles: this.tiles
+        });
+    }
+
+    actionHandler(action, params) {
+        this.resetHistory();
+        this.navigate();
+
+        this.moveAssistant[action](params);
+    }
+
+    navigate() {
+        // TODO - add nullish (??) babel plugin
+        this.router.navigate(this.history.current || 0);
+    }
+
+    moveFromHistory({ tiles } = {}) {
+        if (tiles) {
+            // get instance
+            tiles = this.tiles.filter(t => tiles.find(tile => tile.id === t.id));
+
+            // move tiles
+            this.moveAssistant.moveTiles(tiles);
+
+            this.navigate();
+        }
+    }
+
+    async moveFromEvent(e) {
+        const tiles = this.moveAssistant.getEventTiles(e);
 
         if (tiles) {
-            this.$emit('history:push', tiles);
+            const { resolved, tiles: moved } = await this.moveAssistant.moveTiles(tiles);
 
-            const resolved = this.moveController.moveTiles(tiles);
+            this.$emit('history:push', moved);
 
             if (resolved) {
                 this.$emit('board:resolved');
 
                 return;
             }
+
         }
     }
 
-    onClick(event) {
-        this.onMove(event);
+    onClick(evt) {
+        this.moveFromEvent(evt);
     }
 
-    onKeydown(event) {
-        if (event.includes('move')) {
-            this.onMove(event);
+    onKeydown(evt) {
+        if (evt.includes('move')) {
+            this.moveFromEvent(evt);
         }
         else {
-            this.$emit(event);
+            this.$emit(evt);
         }
+    }
+
+    onHashChanged(forward) {
+    }
+
+    onResize() {
+        const { width, height } = this.coords;
+        const $newStyles = createStyles(this.image, width, height);
+
+        this.$root.replace($newStyles, 'style');
+        this.moveAssistant.animate(this.tiles, { width, height });
+        this.resetHistory();
     }
 
     toHTML() {

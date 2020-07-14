@@ -1,0 +1,41 @@
+.puzzle-game__loader {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 101%;
+    height: 101%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $loader-background;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    border-radius: 20px;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .loader {
+        display: inline-block;
+        position: relative;
+        width: $loader-width;
+        height: $loader-width;
+
+        div {
+            position: absolute;
+            border: 1px solid $loader-color;
+            box-shadow: 1px 0 0 1px $loader-color;
+            opacity: 0;
+            border-radius: 50%;
+            animation: loader 1.6s ease infinite;
+
+            &:nth-child(2) {
+                animation-delay: .35s;
+            }
+        }
+    }
+}

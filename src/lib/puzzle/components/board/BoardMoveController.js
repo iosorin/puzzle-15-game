@@ -78,7 +78,7 @@ export class BoardMoveController {
     }
 
     keydownTarget(direction) {
-        direction = direction.toLowerCase().replace('move', '');
+        direction = direction.toLowerCase().replace('move:', '');
 
         const { col, row } = this.emptyTile;
 

@@ -1,13 +1,13 @@
-import { $ } from './core/dom';
+import { $ } from '@core/dom';
+import { Emitter } from '@core/Emitter';
+import { BaseComponent } from '@core/BaseComponent';
 import { components } from './components';
-import { keymapEvent } from './core/utils';
-import { options as initialOptions, keymap } from './core/defaults';
-import { Emitter } from './core/Emitter';
-import { BaseComponent } from './core/BaseComponent';
+import { config as initialConfig, keymap } from '@core/constants';
+import { keymapEvent } from '@core/utils';
 
 
 export class PuzzleGame extends BaseComponent {
-    constructor(selector, options) {
+    constructor(selector, config) {
         const $document = $(document);
         const emitter = new Emitter();
         const listeners = ['keydown'];
@@ -21,7 +21,7 @@ export class PuzzleGame extends BaseComponent {
         this.components = components || [];
 
         this.$container = $(selector);
-        this.options = { ...initialOptions, ...options };
+        this.config = { ...initialConfig, ...config };
     }
 
     gameRoot() {
@@ -29,7 +29,7 @@ export class PuzzleGame extends BaseComponent {
 
         this.components = this.components.map((Component) => {
             const $componentRoot = $.create('div', Component.className);
-            const component = new Component($componentRoot, this.emitter, this.options);
+            const component = new Component($componentRoot, this.emitter, this.config);
 
             if (component.toHTML().length) {
                 $componentRoot.html(component.toHTML());

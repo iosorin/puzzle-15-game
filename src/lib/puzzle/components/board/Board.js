@@ -6,13 +6,13 @@ import { createStyles } from './createStyles';
 class PuzzleBoard extends BaseComponent {
     static className = 'puzzle-game__board';
 
-    constructor($root, emitter, options) {
+    constructor($root, emitter, config) {
         super($root, {
             listeners: ['click'],
             emitter
         });
 
-        this.options = options;
+        this.config = config;
 
         this.width = 0;
         this.height = 0;
@@ -23,13 +23,13 @@ class PuzzleBoard extends BaseComponent {
     init() {
         super.init();
 
-        this.moveController = new BoardMoveController(this.tiles, this.options.shuffleDelay);
+        this.moveController = new BoardMoveController(this.tiles, this.config.shuffleDelay);
 
-        this.$on('puzzle:keydown', (direction) => this.onMove(direction));
+        this.$on('puzzle:keydown', (e) => this.onKeydown(e));
         this.$on('puzzle:shuffle', (delay) => this.moveController.shuffle(delay));
         this.$on('puzzle:resolve', () => this.moveController.resolve());
         this.$on('history:changed', ({ tiles }) => this.moveController.moveTiles(tiles));
-        this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
+        this.$on('image:loaded', (params) => this.onImageLoaded(params));
         this.$on('size:changed', (size) => this.createBoard(size));
     }
 
@@ -46,7 +46,7 @@ class PuzzleBoard extends BaseComponent {
         this.createBoard();
     }
 
-    createBoard(size = this.options.size) {
+    createBoard(size = this.config.size) {
         this.$root.clear();
 
         this.$root.append(createStyles(this.image, this.width, this.height));
@@ -90,6 +90,15 @@ class PuzzleBoard extends BaseComponent {
 
     onClick(event) {
         this.onMove(event);
+    }
+
+    onKeydown(event) {
+        if (event.includes('move')) {
+            this.onMove(event);
+        }
+        else {
+            this.$emit(event);
+        }
     }
 
     toHTML() {

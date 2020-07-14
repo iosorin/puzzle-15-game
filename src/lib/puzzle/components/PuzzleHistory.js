@@ -2,7 +2,7 @@ import { CommandManager } from '@core/CommandManager';
 import { BaseComponent } from '@core/BaseComponent';
 
 
-// TODO: pass undo disabled state
+// TODO: correct redo disabled state
 class PuzzleHistory extends BaseComponent {
     constructor(_, emitter) {
         super(window, { emitter });
@@ -28,10 +28,8 @@ class PuzzleHistory extends BaseComponent {
 
                 this.$emit('history:changed', {
                     undo: true,
-                    redo: true
+                    redo: true  // remove
                 });
-
-                console.log('execute', this.current);
             },
             unexecute: () => {
                 this.current--;
@@ -42,8 +40,6 @@ class PuzzleHistory extends BaseComponent {
                         undo: false
                     });
                 }
-
-                console.log('unexecute', this.current);
             }
         });
     }

@@ -12,7 +12,7 @@ const emitMap = {
 class PuzzleButtons extends BaseStateComponent {
     static className = 'puzzle-game__buttons';
 
-    constructor($root, emitter, options) {
+    constructor($root, emitter, config) {
         const listeners = ['click'];
 
         super($root, {
@@ -20,7 +20,7 @@ class PuzzleButtons extends BaseStateComponent {
             emitter
         });
 
-        this.buttons = options.buttons;
+        this.buttons = config.buttons;
     }
 
     get template() {
@@ -38,13 +38,13 @@ class PuzzleButtons extends BaseStateComponent {
             redo: true
         });
 
-        this.$on('history:changed', (options = {}) => {
-            if ('undo' in options) {
-                this.setState({ undo: options.undo });
+        this.$on('history:changed', (changed = {}) => {
+            if ('undo' in changed) {
+                this.setState({ undo: changed.undo });
             }
 
-            if ('redo' in options) {
-                this.setState({ redo: options.undo });
+            if ('redo' in changed) {
+                this.setState({ redo: changed.undo });
             }
         });
     }

@@ -1,10 +1,10 @@
 import { BaseComponent } from '@core/BaseComponent';
 
 class PuzzleImage extends BaseComponent {
-    constructor($root, emitter, options) {
+    constructor($root, emitter, config) {
         super($root, { emitter });
 
-        this.src = options.image;
+        this.src = config.image;
         this.width = 0;
         this.height = 0;
     }

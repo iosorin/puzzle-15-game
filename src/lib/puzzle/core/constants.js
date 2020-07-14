@@ -1,17 +1,19 @@
 // Todo: implement ctrl-z/ctrl-y
 
 const keymap = {
-    38: 'moveDown',
-    87: 'moveDown',
-    40: 'moveUp',
-    83: 'moveUp',
-    37: 'moveRight',
-    65: 'moveRight',
-    39: 'moveLeft',
-    68: 'moveLeft'
+    38: 'move:down',
+    87: 'move:down',
+    40: 'move:up',
+    83: 'move:up',
+    37: 'move:right',
+    65: 'move:right',
+    39: 'move:left',
+    68: 'move:left',
+    cmd_90: 'history:undo',
+    cmd_89: 'history:redo'
 };
 
-const options = {
+const config = {
     image: 'https://picsum.photos/500/500',
     buttons: ['shuffle', 'resolve', 'undo', 'redo'],
     shuffleDelay: 1000,
@@ -23,5 +25,5 @@ const options = {
 
 export {
     keymap,
-    options
+    config
 };

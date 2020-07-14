@@ -39,7 +39,6 @@ export class DomListener {
         this.listeners.forEach((listener) => {
             const method = getMethodName(listener);
 
-            // Same as removeEventListener
             this.$root.off(listener, this[method]);
         });
     }

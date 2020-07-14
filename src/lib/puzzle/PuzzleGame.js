@@ -33,9 +33,8 @@ export class PuzzleGame extends BaseComponent {
 
             if (component.toHTML().length) {
                 $componentRoot.html(component.toHTML());
+                $gameRoot.append($componentRoot);
             }
-
-            $gameRoot.append($componentRoot);
 
             return component;
         });

@@ -28,7 +28,7 @@ class PuzzleBoard extends BaseComponent {
         this.$on('puzzle:keydown', (direction) => this.onMove(direction));
         this.$on('puzzle:shuffle', (delay) => this.moveController.shuffle(delay));
         this.$on('puzzle:resolve', () => this.moveController.resolve());
-        this.$on('history:changed', (tiles) => this.moveController.moveTiles(tiles));
+        this.$on('history:changed', ({ tiles }) => this.moveController.moveTiles(tiles));
         this.$on('image:loaded', (imageParams) => this.onImageLoaded(imageParams));
         this.$on('size:changed', (size) => this.createBoard(size));
     }
@@ -90,6 +90,10 @@ class PuzzleBoard extends BaseComponent {
 
     onClick(event) {
         this.onMove(event);
+    }
+
+    toHTML() {
+        return ' ';
     }
 }
 

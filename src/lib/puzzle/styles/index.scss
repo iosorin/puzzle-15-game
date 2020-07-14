@@ -65,27 +65,29 @@ $border-radius: 3px;
     &__buttons {
         margin-top: 15px;
         text-align: center;
+    }
 
-        button {
-            font-size: 14px;
-            text-transform: capitalize;
-            padding: 4px 14px;
-            border-radius: $border-radius;
-            background: $button-color;
-            transition: background .1s ease-out;
+    &__button {
+        font-size: 14px;
+        text-transform: capitalize;
+        padding: 4px 14px;
+        border-radius: $border-radius;
+        background: $button-color;
+        opacity: 0.9;
+        transition: all .1s ease-out;
 
-            &:not(:last-child) {
-                margin-right: 6px;
-            }
+        &:not(:last-child) {
+            margin-right: 6px;
+        }
 
-            &:hover {
-                background: darken($button-color, 10);
-            }
+        &:hover {
+            background: darken($button-color, 10);
+            opacity: 1;
+        }
 
-            &[disabled] {
-                user-select: none;
-                pointer-events: none;
-            }
+        &[disabled] {
+            user-select: none;
+            pointer-events: none;
         }
     }
 }

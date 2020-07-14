@@ -2,11 +2,11 @@ import { $ } from '@core/dom';
 import { create } from './buttons.temlate';
 import { BaseStateComponent } from '@puzzle/core/BaseStateComponent';
 
-const EMIT_MAP = {
-    shuffle: 'puzzle:shuffle',
-    resolve: 'puzzle:resolve',
+const emitMap = {
     undo: 'history:undo',
-    redo: 'history:redo'
+    redo: 'history:redo',
+    shuffle: 'puzzle:shuffle',
+    resolve: 'puzzle:resolve'
 };
 
 class PuzzleButtons extends BaseStateComponent {
@@ -27,21 +27,26 @@ class PuzzleButtons extends BaseStateComponent {
         return create(this.state);
     }
 
-
     init() {
         super.init();
 
-        if (this.buttons) {
-            this.setState({
-                buttons: this.buttons,
-                canUndo: true,
-                canRedo: true
-            });
+        const { buttons } = this;
 
-            // this.$on('history:changed', ({ canUndo, canRedo } = {}) => {
-            //     this.setState({ canUndo, canRedo });
-            // });
-        }
+        this.setState({
+            buttons,
+            undo: true,
+            redo: true
+        });
+
+        this.$on('history:changed', (options = {}) => {
+            if ('undo' in options) {
+                this.setState({ undo: options.undo });
+            }
+
+            if ('redo' in options) {
+                this.setState({ redo: options.undo });
+            }
+        });
     }
 
     onClick(e) {
@@ -49,11 +54,11 @@ class PuzzleButtons extends BaseStateComponent {
         const { action } = $target.data;
 
         if (action) {
-            if (EMIT_MAP[action] === EMIT_MAP.shuffle) {
-                this.$emit(EMIT_MAP[action], 0); // delay
+            if (emitMap[action] === emitMap.shuffle) {
+                this.$emit(emitMap[action], 0); // delay
             }
             else {
-                this.$emit(EMIT_MAP[action]);
+                this.$emit(emitMap[action]);
             }
         }
     }

@@ -1,21 +1,41 @@
-const createButton = (btn, canUndo, canRedo) => {
-    const undoDisabled = btn === 'undo' && !canUndo;
-    const redoDisabled = btn === 'redo' && !canRedo;
-
-    const disabled = (undoDisabled || redoDisabled) ? 'disabled' : '';
-
-    return `<button data-action="${ btn }" ${ disabled} >${ btn }</button>`;
-
+const toButton = (button) => {
+    return `
+        <button
+            class="puzzle-game__button"
+            data-action='${ button.action }'
+            ${ button.disabled ? 'disabled' : '' }
+        >
+            ${ button.action }
+        </button>
+    `;
 };
 
-const create = ({ buttons, canUndo, canRedo } = {}) => {
-    if (buttons) {
-        return buttons
-            .map(btn => createButton(btn, canUndo, canRedo))
-            .join('');
-    }
+const create = (state = {}) => {
+    if (!state.buttons?.length) return ' ';
 
-    return ' ';
+    const buttons = [
+        {
+            action: 'shuffle',
+            disabled: false
+        },
+        {
+            action: 'resolve',
+            disabled: false
+        },
+        {
+            action: 'undo',
+            disabled: !state.undo
+        },
+        {
+            action: 'redo',
+            disabled: !state.redo
+        }
+    ];
+
+    return buttons
+        .filter(btn => state.buttons?.includes(btn.action))
+        .map(toButton)
+        .join('');
 };
 
 export {

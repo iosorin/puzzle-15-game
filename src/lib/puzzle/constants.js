@@ -1,3 +1,13 @@
+const config = {
+    buttons: ['shuffle', 'resolve', 'undo', 'redo'],
+    image: 'https://picsum.photos/500/500',
+    shuffleDelay: 1000,
+    slider: true,
+    size: 5,
+    max: 10,
+    min: 2
+};
+
 const keymap = {
     38: 'move:down',
     87: 'move:down',
@@ -9,16 +19,6 @@ const keymap = {
     68: 'move:left',
     cmd_90: 'history:undo',
     cmd_89: 'history:redo'
-};
-
-const config = {
-    image: 'https://picsum.photos/500/500',
-    buttons: ['shuffle', 'resolve', 'undo', 'redo'],
-    shuffleDelay: 1000,
-    slider: true,
-    size: 5,
-    min: 2,
-    max: 10
 };
 
 const confirmMessage = 'Well done, the puzzle is assembled! Do you want to play again?';

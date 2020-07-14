@@ -1,11 +1,13 @@
-const toButton = (button) => {
+const toButton = (action, state) => {
+    const disabled = action in state && !state[action];
+
     return `
         <button
             class="puzzle-game__button"
-            data-action='${ button.action }'
-            ${ button.disabled ? 'disabled' : '' }
+            data-action='${ action }'
+            ${ disabled ? 'disabled' : '' }
         >
-            ${ button.action }
+            ${ action }
         </button>
     `;
 };
@@ -13,28 +15,8 @@ const toButton = (button) => {
 const create = (state = {}) => {
     if (!state.buttons?.length) return ' ';
 
-    const buttons = [
-        {
-            action: 'shuffle',
-            disabled: false
-        },
-        {
-            action: 'resolve',
-            disabled: false
-        },
-        {
-            action: 'undo',
-            disabled: !state.undo
-        },
-        {
-            action: 'redo',
-            disabled: !state.redo
-        }
-    ];
-
-    return buttons
-        .filter(btn => state.buttons?.includes(btn.action))
-        .map(toButton)
+    return state.buttons
+        .map(action => toButton(action, state))
         .join('');
 };
 

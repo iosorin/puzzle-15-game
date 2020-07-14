@@ -21,6 +21,7 @@ class PuzzleButtons extends BaseStateComponent {
         });
 
         this.buttons = config.buttons;
+        this.show = config.buttons && config.buttons.length;
     }
 
     get template() {
@@ -32,21 +33,23 @@ class PuzzleButtons extends BaseStateComponent {
 
         const { buttons } = this;
 
-        this.setState({
-            buttons,
-            undo: true,
-            redo: true
-        });
+        if (this.show) {
+            this.setState({
+                buttons,
+                undo: true,
+                redo: true
+            });
 
-        this.$on('history:changed', (changed = {}) => {
-            if ('undo' in changed) {
-                this.setState({ undo: changed.undo });
-            }
+            this.$on('history:changed', (changed = {}) => {
+                if ('undo' in changed) {
+                    this.setState({ undo: changed.undo });
+                }
 
-            if ('redo' in changed) {
-                this.setState({ redo: changed.undo });
-            }
-        });
+                if ('redo' in changed) {
+                    this.setState({ redo: changed.undo });
+                }
+            });
+        }
     }
 
     onClick(e) {
@@ -64,6 +67,8 @@ class PuzzleButtons extends BaseStateComponent {
     }
 
     toHTML() {
+        if (!this.show) return '';
+
         return this.template;
     }
 }

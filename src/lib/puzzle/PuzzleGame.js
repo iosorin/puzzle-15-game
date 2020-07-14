@@ -1,10 +1,9 @@
 import { $ } from '@core/dom';
-import { History } from '@core/History';
 import { Emitter } from '@core/Emitter';
 import { BaseComponent } from '@core/BaseComponent';
-import { components } from './components';
+import { components } from '@puzzle/components';
 import { keymapEvent } from '@core/utils';
-import * as constants from '@core/constants';
+import * as constants from '@puzzle/constants';
 
 export class PuzzleGame extends BaseComponent {
     constructor(selector, config) {
@@ -17,11 +16,13 @@ export class PuzzleGame extends BaseComponent {
             listeners
         });
 
-        this.emitter = emitter;
-        this.components = components || [];
-
         this.$container = $(selector);
+
         this.config = { ...constants.config, ...config };
+        this.components = components || [];
+        this.emitter = emitter;
+
+        this.init();
     }
 
     gameRoot() {

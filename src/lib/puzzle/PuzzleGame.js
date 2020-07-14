@@ -1,10 +1,10 @@
 import { $ } from '@core/dom';
+import { History } from '@core/History';
 import { Emitter } from '@core/Emitter';
 import { BaseComponent } from '@core/BaseComponent';
 import { components } from './components';
-import { config as initialConfig, keymap } from '@core/constants';
 import { keymapEvent } from '@core/utils';
-
+import * as constants from '@core/constants';
 
 export class PuzzleGame extends BaseComponent {
     constructor(selector, config) {
@@ -21,7 +21,7 @@ export class PuzzleGame extends BaseComponent {
         this.components = components || [];
 
         this.$container = $(selector);
-        this.config = { ...initialConfig, ...config };
+        this.config = { ...constants.config, ...config };
     }
 
     gameRoot() {
@@ -58,7 +58,7 @@ export class PuzzleGame extends BaseComponent {
     }
 
     onResolve() {
-        const startNewGame = confirm('Well done, the puzzle is assembled! Do you want to play again?');
+        const startNewGame = confirm(constants.confirmMessage);
 
         if (startNewGame) {
             this.$emit('puzzle:shuffle');
@@ -66,7 +66,7 @@ export class PuzzleGame extends BaseComponent {
     }
 
     onKeydown(e) {
-        const event = keymapEvent(keymap, e);
+        const event = keymapEvent(constants.keymap, e);
 
         if (event) {
             this.$emit('puzzle:keydown', event);

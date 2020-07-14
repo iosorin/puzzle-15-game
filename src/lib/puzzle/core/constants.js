@@ -1,5 +1,3 @@
-// Todo: implement ctrl-z/ctrl-y
-
 const keymap = {
     38: 'move:down',
     87: 'move:down',
@@ -23,7 +21,10 @@ const config = {
     max: 10
 };
 
+const confirmMessage = 'Well done, the puzzle is assembled! Do you want to play again?';
+
 export {
     keymap,
-    config
+    config,
+    confirmMessage
 };

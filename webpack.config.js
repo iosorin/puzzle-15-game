@@ -1,6 +1,6 @@
 const path = require('path');
 
-/* --------------------------------- PLUGINS -------------------------------- */
+/* -- PLUGINS -------------------------------- */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtactPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
@@ -8,11 +8,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-/* --------------------------- TOP-LEVEL VARIABLES -------------------------- */
+/* -- ENV VARIABLES -------------------------- */
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
-/* --------------------------------- CONGIF --------------------------------- */
+/* -- CONGIF --------------------------------- */
 module.exports = {
     mode: process.env.NODE_ENV,
     context: path.resolve(__dirname, 'src'),
@@ -80,7 +80,7 @@ module.exports = {
     }
 };
 
-/* --------------------------------- HELPERS -------------------------------- */
+/* -- HELPERS -------------------------------- */
 function filename(ext) {
     return isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 }

@@ -5,7 +5,7 @@ import '@/scss';
 import { PuzzleGame } from '@puzzle/PuzzleGame';
 
 new PuzzleGame('#puzzle', {
-    image: 'http://cs.pikabu.ru/images/jobseeker/logo2.png',
+    image: 'https://picsum.photos/400?grayscale',
     slider: true,
     size: 5
 });

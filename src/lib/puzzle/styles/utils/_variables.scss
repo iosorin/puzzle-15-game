@@ -1,13 +1,14 @@
-$grey: #D0D0D0;
-$green-light: #D8FFBC;
-$green-middle: #8AC858;
-$green-dark: #83BE54;
+$grey: #DDDDDD;
+$green-light: #F2F5F5;
+$green-middle: #a88d92;
+$green-dark: #444;
 $border-radius: 3px;
 
-$button-color: #EFEFEF;
+$button-color: #242424;
 $button-height: 26px;
-$text: #212121;
+$text: #fff;
 
-$loader-width: 70px;
-$loader-color: $green-dark;
-$loader-background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+$loader-width: 50px;
+$loader-color: #fff;
+// $loader-background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+$loader-background: transparent;

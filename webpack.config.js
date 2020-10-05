@@ -7,6 +7,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const SentryCliPlugin = require('@sentry/webpack-plugin');
 
 /* -- ENV VARIABLES -------------------------- */
 const isDev = process.env.NODE_ENV === 'development';
@@ -47,6 +48,14 @@ module.exports = {
         }),
         new MiniCssExtactPlugin({
             filename: filename('css')
+        }),
+        new SentryCliPlugin({
+            release: 0.1,
+            include: '.',
+            ignoreFile: '.sentrycliignore',
+            ignore: ['node_modules', 'webpack.config.js'],
+            configFile: '.sentryclirc',
+            dryRun: true
         })
     ],
     resolve: {

@@ -32,3 +32,21 @@ body {
     width: 100%;
     min-height: 100px;
 }
+
+#sentry-check {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: #FF3D00;
+    opacity: 0.7;
+    transition: opacity 0.2s ;
+    &:hover {
+        opacity: 1;
+    }
+    &:active {
+        opacity: 0.7;
+    }
+}

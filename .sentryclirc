@@ -1,0 +1,7 @@
+[auth]
+token=c5499b0645a442ffb86846b7b20558251e39a25694f344a59ceee46bdf5b45e7
+
+[defaults]
+url = https://osorina.github.io/puzzle-15-game/
+project=15-game
+org=15-game

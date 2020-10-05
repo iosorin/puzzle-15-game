@@ -4,4 +4,4 @@ The 15 puzzle (also called Gem Puzzle, Boss Puzzle, Game of Fifteen, Mystic Squa
 
 ## Screenshot
 
-![](assets/screenshot.png)
+![](./assets/screenshot.png)

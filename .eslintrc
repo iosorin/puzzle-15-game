@@ -5,9 +5,7 @@
         "node": true,
         "es6": true
     },
-    "extends": [
-        "eslint:recommended"
-    ],
+    "extends": ["eslint:recommended"],
     "rules": {
         "semi": [2, "always"],
         "no-console": 1,
@@ -28,21 +26,13 @@
                 "before": true
             }
         ],
-        "quotes": [
-            2,
-            "single"
-        ],
-        "comma-dangle": [
-            2,
-            "never"
-        ],
+        "quotes": [2, "single"],
+        "comma-dangle": [2, "never"],
         "indent": [
             1,
             4,
             {
-                "ignoredNodes": [
-                    "TemplateLiteral"
-                ],
+                "ignoredNodes": ["TemplateLiteral"],
                 "SwitchCase": 1
             }
         ]

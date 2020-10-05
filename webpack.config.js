@@ -102,10 +102,7 @@ function optimization() {
     };
 
     if (isProd) {
-        config.minimizer = [
-            new OptimizeCssAssetsPlugin(),
-            new TerserWebpackPlugin()
-        ];
+        config.minimizer = [new OptimizeCssAssetsPlugin(), new TerserWebpackPlugin()];
     }
 
     return config;
